@@ -1,10 +1,9 @@
 {
-    "name": "getdave/acf-file-picker",
+    "name": "alapiere/acf-file-picker",
     "description": "An Advanced Custom Field to pick a file from a chosen directory.",
     "authors": [
         {
-            "name": "David Smith",
-            "email": "getdavemail@gmail.com"
+            "name": "Alapiere"
         }
     ],
     "require": {
