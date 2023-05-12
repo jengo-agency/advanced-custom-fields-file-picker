@@ -1,8 +1,8 @@
 === Advanced Custom Fields: File Picker Field ===
-Contributors: David Smith (@get_dave)
+Contributors: David Smith (@get_dave), Arnaud Lapiere
 Tags: file,selector,icons,picker
 Requires at least: 3.5
-Tested up to: 3.8.1
+Tested up to: 6.2.0
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -33,6 +33,9 @@ This ACF field type is compatible with:
 5. (Optionally) provide a globbing pattern to filter the files you wish to be available to choose from (defaults to all files)
 
 == Changelog ==
+
+= 1.1.3 =
+* (breaking change) Return full path of file picked instead of just file name.
 
 = 1.1.2 =
 * Add annotations to Plugin comment block so details show up in WP Plugins in the Admin.

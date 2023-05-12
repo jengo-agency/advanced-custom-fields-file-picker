@@ -10,14 +10,12 @@ An Advanced Custom Field to pick a file from a chosen directory.
 
 Provides a custom field type for Advanced Custom Fields which allows the user to pick a file from a directory within the currently active Theme.
 
-The Plugin provides "globbing" functionality enabling the user to optionally filter which files within the chosen directory should be available for selection. Globbing rules follow the rules used by the 
-PHP [Glob function](http://php.net/manual/en/function.glob.php)
+The Plugin provides "globbing" functionality enabling the user to optionally filter which files within the chosen directory should be available for selection. Globbing rules follow the rules used by the  PHP [Glob function](http://php.net/manual/en/function.glob.php)
 
 ### Compatibility
 
 This ACF field type is compatible with:
 * ACF 5
-
 
 ### Installation
 
@@ -26,6 +24,9 @@ This ACF field type is compatible with:
 3. Create a new field via ACF and select the File Picker type
 4. Provide the path the directory (relative to your Theme) containing the files you wish to pick from
 5. (Optionally) provide a globbing pattern to filter the files you wish to be available to choose from (defaults to all files)
+
+### Output
+get_field() will output full file url
 
 ### Changelog
 Please see `readme.txt` for changelog

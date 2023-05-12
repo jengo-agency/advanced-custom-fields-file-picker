@@ -3,8 +3,8 @@
 namespace ACFFilePicker;
 
 class Field extends \acf_field {
-	
-	
+
+
 	/*
 	*  __construct
 	*
@@ -17,55 +17,52 @@ class Field extends \acf_field {
 	*  @param	n/a
 	*  @return	n/a
 	*/
-	
+
 	function __construct() {
-		
+
 		/*
 		*  name (string) Single word, no spaces. Underscores allowed
 		*/
-		
+
 		$this->name = 'file_picker';
-		
-		
+
+
 		/*
 		*  label (string) Multiple words, can include spaces, visible when selecting a field type
 		*/
-		
+
 		$this->label = __('File Picker', 'acf-file_picker');
-		
-		
+
+
 		/*
 		*  category (string) basic | content | choice | relational | jquery | layout | CUSTOM GROUP NAME
 		*/
-		
+
 		$this->category = 'choice';
-		
-		
+
+
 		/*
 		*  defaults (array) Array of default settings which are merged into the field object. These are used later in settings
 		*/
-		
-		$this->defaults = array(
-			
-		);
-		
-		
+
+		$this->defaults = array();
+
+
 		/*
 		*  l10n (array) Array of strings that are used in JavaScript. This allows JS strings to be translated in PHP and loaded via:
 		*  var message = acf._e('file_picker', 'error');
 		*/
-		
+
 		$this->l10n = array(
 			'error'	=> __('Error! Please enter a higher value', 'acf-file_picker'),
 		);
-		
-				
+
+
 		// do not delete!
-    	parent::__construct();
-    	
+		parent::__construct();
 	}
-	
-	
+
+
 	/*
 	*  render_field_settings()
 	*
@@ -78,9 +75,9 @@ class Field extends \acf_field {
 	*  @param	$field (array) the $field being edited
 	*  @return	n/a
 	*/
-	
-	public function render_field_settings( $field ) {
-		
+
+	public function render_field_settings($field) {
+
 
 		/*
 		*  acf_render_field_setting
@@ -91,20 +88,20 @@ class Field extends \acf_field {
 		*  More than one setting can be added by copy/paste the above code.
 		*  Please note that you must also have a matching $defaults value for the field name (font_size)
 		*/
-	
+
 		$theme_dir = $this->get_theme_directory();
-		
-		acf_render_field_setting( $field, array(
-			'label'			=> __('File Location','acf-file_picker'),
-			'instructions'	=> __('Enter the path to the directory where you files are located relative to your Theme (stylesheet) directory.','acf-file_picker'),
+
+		acf_render_field_setting($field, array(
+			'label'			=> __('File Location', 'acf-file_picker'),
+			'instructions'	=> __('Enter the path to the directory where you files are located relative to your Theme (stylesheet) directory.', 'acf-file_picker'),
 			'type'			=> 'text',
 			'name'			=> 'file_location',
 			'prepend'		=>  $theme_dir . '/',
 		));
 
-		acf_render_field_setting( $field, array(
-			'label'			=> __('File Glob Pattern','acf-file_picker'),
-			'instructions'	=> __('Optionally enter a Globbing pattern to filter files by a pattern. Operates according to the rules used by the PHP glob() function http://php.net/manual/en/function.glob.php','acf-file_picker'),
+		acf_render_field_setting($field, array(
+			'label'			=> __('File Glob Pattern', 'acf-file_picker'),
+			'instructions'	=> __('Optionally enter a Globbing pattern to filter files by a pattern. Operates according to the rules used by the PHP glob() function http://php.net/manual/en/function.glob.php', 'acf-file_picker'),
 			'type'			=> 'text',
 			'placeholder'	=> 'eg: *.{png,jpg,gif}',
 			'name'			=> 'file_glob',
@@ -113,34 +110,34 @@ class Field extends \acf_field {
 
 
 	private function get_theme_directory() {
-		return substr( get_stylesheet_directory(), strlen( get_theme_root() ));
+		return substr(get_stylesheet_directory(), strlen(get_theme_root()));
 	}
 
 
-	private function get_file_location_directory( $file_location ) {
-		$file_location = ltrim( $file_location, '/' ); // remove the first slash if the user has provided one...
-		return trailingslashit( get_stylesheet_directory() . '/' . $file_location );
+	private function get_file_location_directory($file_location) {
+		$file_location = ltrim($file_location, '/'); // remove the first slash if the user has provided one...
+		return trailingslashit(get_stylesheet_directory() . '/' . $file_location);
 	}
 
-	private function get_files_in_location( $file_location, $file_glob ) {
+	private function get_files_in_location($file_location, $file_glob) {
 
 
-		$glob = ( !empty( $file_glob) ) ? $file_glob : '*';
-		
+		$glob = (!empty($file_glob)) ? $file_glob : '*';
+
 
 		$files = glob($file_location . $glob, GLOB_BRACE);
 
-		if ( count( $files ) ) {
-			$files = array_map(function($filepath) use ($file_location) {
-				return basename( $filepath );
+		if (count($files)) {
+			$files = array_map(function ($filepath) use ($file_location) {
+				return basename($filepath);
 			}, $files);
 		}
 
 		return $files;
 	}
-	
-	
-	
+
+
+
 	/*
 	*  render_field()
 	*
@@ -155,39 +152,39 @@ class Field extends \acf_field {
 	*  @param	$field (array) the $field being edited
 	*  @return	n/a
 	*/
-	
-	function render_field( $field ) {
-		
+
+	function render_field($field) {
+
 		/*
 		*  Review the data of $field.
 		*  This will show what data is available
 		*/
-		
-		$file_location = $this->get_file_location_directory( $field['file_location'] );
-		
-		$files = $this->get_files_in_location( $file_location, $field['file_glob'] );
-	
-		
+
+		$file_location = $this->get_file_location_directory($field['file_location']);
+
+		$files = $this->get_files_in_location($file_location, $field['file_glob']);
+
+
 		/*
 		* Create a simple text input using the 'font_size' setting.
 		*/
-		
-		?>
 
-		<?php if ( empty($files) ): ?>
-		<p>No files were found in the location specified. Please check your field configuration.</p>
+?>
+
+		<?php if (empty($files)) : ?>
+			<p>No files were found in the location specified. Please check your field configuration.</p>
 		<?php endif; ?>
 		<select name="<?php echo esc_attr($field['name']) ?>">
 			<option value="">Please select a file</option>
-			<?php foreach ($files as $file): ?>
-				<option value="<?php echo $file; ?>" <?php echo ( $field['value'] == $file) ? 'selected' : ''; ?>><?php echo $file; ?></option>
+			<?php foreach ($files as $file) : ?>
+				<option value="<?php echo $file; ?>" <?php echo ($field['value'] == $file) ? 'selected' : ''; ?>><?php echo $file; ?></option>
 			<?php endforeach; ?>
 		</select>
 
-		<?php
+<?php
 	}
-	
-		
+
+
 	/*
 	*  input_admin_enqueue_scripts()
 	*
@@ -222,8 +219,8 @@ class Field extends \acf_field {
 	}
 	
 	*/
-	
-	
+
+
 	/*
 	*  input_admin_head()
 	*
@@ -247,8 +244,8 @@ class Field extends \acf_field {
 	}
 	
 	*/
-	
-	
+
+
 	/*
    	*  input_form_data()
    	*
@@ -265,8 +262,8 @@ class Field extends \acf_field {
    	*  @param	$args (array)
    	*  @return	n/a
    	*/
-   	
-   	/*
+
+	/*
    	
    	function input_form_data( $args ) {
 	   	
@@ -275,8 +272,8 @@ class Field extends \acf_field {
    	}
    	
    	*/
-	
-	
+
+
 	/*
 	*  input_admin_footer()
 	*
@@ -300,8 +297,8 @@ class Field extends \acf_field {
 	}
 	
 	*/
-	
-	
+
+
 	/*
 	*  field_group_admin_enqueue_scripts()
 	*
@@ -324,7 +321,7 @@ class Field extends \acf_field {
 	
 	*/
 
-	
+
 	/*
 	*  field_group_admin_head()
 	*
@@ -362,7 +359,7 @@ class Field extends \acf_field {
 	*  @param	$field (array) the field array holding all the field options
 	*  @return	$value
 	*/
-	
+
 	/*
 	
 	function load_value( $value, $post_id, $field ) {
@@ -372,8 +369,8 @@ class Field extends \acf_field {
 	}
 	
 	*/
-	
-	
+
+
 	/*
 	*  update_value()
 	*
@@ -388,26 +385,24 @@ class Field extends \acf_field {
 	*  @param	$field (array) the field array holding all the field options
 	*  @return	$value
 	*/
-	
-	
-	
+
+
+
 	/*
 	function update_value( $value, $post_id, $field ) {
 			echo "<pre>";
 			print_r($value);
 			echo "</pre>";
 			return $value;
-			
 		}
 	*/
-	
-	
-	
-	
-	/*
-	*  format_value()
+
+
+
+	/**
+	*  format_value
 	*
-	*  This filter is appied to the $value after it is loaded from the db and before it is returned to the template
+	*  Add path (file_location) to returned file url
 	*
 	*  @type	filter
 	*  @since	3.6
@@ -419,35 +414,24 @@ class Field extends \acf_field {
 	*
 	*  @return	$value (mixed) the modified value
 	*/
-		
-	/*
-	
-	function format_value( $value, $post_id, $field ) {
-		
+
+	function format_value($value, $post_id, $field) {
+
 		// bail early if no value
-		if( empty($value) ) {
-		
+		if (empty($value)) {
 			return $value;
-			
 		}
-		
-		
-		// apply setting
-		if( $field['font_size'] > 12 ) { 
-			
-			// format the value
-			// $value = 'something';
-		
-		}
-		
-		
+		$path_prefix = wp_normalize_path('/' . $field['file_location']) . '/';
+		$url_prefix = trailingslashit(get_stylesheet_directory_uri() . '/' . $field['file_location']);
+		//var_dump($field);
+
 		// return
-		return $value;
+		return $url_prefix . $value;
 	}
-	
-	*/
-	
-	
+
+
+
+
 	/*
 	*  validate_value()
 	*
@@ -465,28 +449,26 @@ class Field extends \acf_field {
 	*  @param	$input (string) the corresponding input name for $_POST value
 	*  @return	$valid
 	*/
-	
-	
-	
-	function validate_value( $valid, $value, $field, $input ){
-		
-		$directory = $this->get_file_location_directory( $field['file_location'] );
-		
+
+
+
+	function validate_value($valid, $value, $field, $input) {
+
+		$directory = $this->get_file_location_directory($field['file_location']);
+
 		// Ensure the file actually exists...
-		if( !file_exists( $directory . $value ) )
-		{
-			$valid = __('That file does not exist or cannot be read','acf-file_picker');
+		if (!file_exists($directory . $value)) {
+			$valid = __('That file does not exist or cannot be read', 'acf-file_picker');
 		}
 
-		
+
 		// return
 		return $valid;
-		
 	}
-	
-	
-	
-	
+
+
+
+
 	/*
 	*  delete_value()
 	*
@@ -501,7 +483,7 @@ class Field extends \acf_field {
 	*  @param	$key (string) the $meta_key which the value was deleted
 	*  @return	n/a
 	*/
-	
+
 	/*
 	
 	function delete_value( $post_id, $key ) {
@@ -511,8 +493,8 @@ class Field extends \acf_field {
 	}
 	
 	*/
-	
-	
+
+
 	/*
 	*  load_field()
 	*
@@ -525,7 +507,7 @@ class Field extends \acf_field {
 	*  @param	$field (array) the field array holding all the field options
 	*  @return	$field
 	*/
-	
+
 	/*
 	
 	function load_field( $field ) {
@@ -535,8 +517,8 @@ class Field extends \acf_field {
 	}	
 	
 	*/
-	
-	
+
+
 	/*
 	*  update_field()
 	*
@@ -549,7 +531,7 @@ class Field extends \acf_field {
 	*  @param	$field (array) the field array holding all the field options
 	*  @return	$field
 	*/
-	
+
 	/*
 	
 	function update_field( $field ) {
@@ -559,8 +541,8 @@ class Field extends \acf_field {
 	}	
 	
 	*/
-	
-	
+
+
 	/*
 	*  delete_field()
 	*
@@ -573,7 +555,7 @@ class Field extends \acf_field {
 	*  @param	$field (array) the field array holding all the field options
 	*  @return	n/a
 	*/
-	
+
 	/*
 	
 	function delete_field( $field ) {
@@ -583,8 +565,6 @@ class Field extends \acf_field {
 	}	
 	
 	*/
-	
-	
 }
 
 
