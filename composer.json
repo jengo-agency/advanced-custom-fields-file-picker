@@ -1,23 +1,26 @@
 {
     "name": "alapiere/acf-file-picker",
     "description": "An Advanced Custom Field to pick a file from a chosen directory.",
+    "type": "wordpress-plugin",
     "authors": [
+        {
+            "name": "David Smith"
+        }
+        ,
         {
             "name": "Alapiere"
         }
     ],
     "require": {
-        "mockery/mockery": "^0.9.4",
-        "php-mock/php-mock": "^1.0",
-        "php-mock/php-mock-mockery": "^1.1"
+        "composer/installers": "~2.0"
     },
     "require-dev": {
+        "mockery/mockery": "^0.9.4",
+        "php-mock/php-mock": "^1.0",
+        "php-mock/php-mock-mockery": "^1.1",
         "phpspec/phpspec": "~2.0"
     },
-    "config": {
-        "bin-dir": "bin"
-    },
-	"autoload": {
+	"autoload-dev": {
 		"files": ["classes/acf-file_picker-v5.php"]
 	}
 }
