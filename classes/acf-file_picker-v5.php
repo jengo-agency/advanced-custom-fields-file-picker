@@ -161,7 +161,7 @@ class Field extends \acf_field {
 		*/
 
 		$file_location = $this->get_file_location_directory($field['file_location']);
-
+		$file_uri_location= trailingslashit(get_stylesheet_directory_uri() . '/' . $field['file_location']);
 		$files = $this->get_files_in_location($file_location, $field['file_glob']);
 
 
@@ -174,10 +174,10 @@ class Field extends \acf_field {
 		<?php if (empty($files)) : ?>
 			<p>No files were found in the location specified. Please check your field configuration.</p>
 		<?php endif; ?>
-		<select name="<?php echo esc_attr($field['name']) ?>">
+		<select name="<?php echo esc_attr($field['name']) ?>" data-dynamic-select>
 			<option value="">Please select a file</option>
-			<?php foreach ($files as $file) : ?>
-				<option value="<?php echo $file; ?>" <?php echo ($field['value'] == $file) ? 'selected' : ''; ?>><?php echo $file; ?></option>
+			<?php foreach ($files as $file) :?>
+				<option value="<?= $file; ?>" data-img="<?= $file_uri_location . "/" . $file?>" <?= ($field['value'] == $file) ? 'selected' : ''; ?>><?= $file; ?></option>
 			<?php endforeach; ?>
 		</select>
 
