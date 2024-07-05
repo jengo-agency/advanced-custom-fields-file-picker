@@ -4,7 +4,6 @@ namespace ACFFilePicker;
 
 class Field extends \acf_field {
 
-
 	/*
 	*  __construct
 	*
@@ -161,7 +160,7 @@ class Field extends \acf_field {
 		*/
 
 		$file_location = $this->get_file_location_directory($field['file_location']);
-		$file_uri_location= trailingslashit(get_stylesheet_directory_uri() . '/' . $field['file_location']);
+		$file_uri_location = trailingslashit(get_stylesheet_directory_uri() . '/' . $field['file_location']);
 		$files = $this->get_files_in_location($file_location, $field['file_glob']);
 
 
@@ -176,8 +175,8 @@ class Field extends \acf_field {
 		<?php endif; ?>
 		<select name="<?php echo esc_attr($field['name']) ?>" data-dynamic-select>
 			<option value="">Please select a file</option>
-			<?php foreach ($files as $file) :?>
-				<option value="<?= $file; ?>" data-img="<?= $file_uri_location . "/" . $file?>" <?= ($field['value'] == $file) ? 'selected' : ''; ?>><?= $file; ?></option>
+			<?php foreach ($files as $file) : ?>
+				<option value="<?= $file; ?>" data-img="<?= $file_uri_location . "/" . $file ?>" <?= ($field['value'] == $file) ? 'selected' : ''; ?>><?= $file; ?></option>
 			<?php endforeach; ?>
 		</select>
 
@@ -199,26 +198,21 @@ class Field extends \acf_field {
 	*  @return	n/a
 	*/
 
-	/*
-	
+
+
 	function input_admin_enqueue_scripts() {
-		
-		$dir = plugin_dir_url( __FILE__ );
-		
-		
-		// register & include JS
-		wp_register_script( 'acf-input-file_picker', "{$dir}js/input.js" );
-		wp_enqueue_script('acf-input-file_picker');
-		
-		
-		// register & include CSS
-		wp_register_style( 'acf-input-file_picker', "{$dir}css/input.css" ); 
-		wp_enqueue_style('acf-input-file_picker');
-		
-		
+		$dir = plugin_dir_url(__FILE__);
+
+		//* register & include JS
+		wp_register_script('dynamic-select-js', "{$dir}js/DynamicSelect.js");
+		wp_enqueue_script('dynamic-select-js');
+
+		//* register & include CSS
+		wp_register_style('dynamic-select-css', "{$dir}css/DynamicSelect.css");
+		wp_enqueue_style('dynamic-select-css');
 	}
-	
-	*/
+
+
 
 
 	/*
@@ -236,13 +230,9 @@ class Field extends \acf_field {
 	*/
 
 	/*
-		
 	function input_admin_head() {
-	
-		
-		
+
 	}
-	
 	*/
 
 
@@ -264,13 +254,11 @@ class Field extends \acf_field {
    	*/
 
 	/*
-   	
+
    	function input_form_data( $args ) {
-	   	
-		
-	
+
    	}
-   	
+
    	*/
 
 
@@ -289,13 +277,11 @@ class Field extends \acf_field {
 	*/
 
 	/*
-		
+
 	function input_admin_footer() {
-	
-		
-		
+
 	}
-	
+
 	*/
 
 
@@ -314,11 +300,9 @@ class Field extends \acf_field {
 	*/
 
 	/*
-	
 	function field_group_admin_enqueue_scripts() {
-		
+
 	}
-	
 	*/
 
 
@@ -337,11 +321,11 @@ class Field extends \acf_field {
 	*/
 
 	/*
-	
+
 	function field_group_admin_head() {
-	
+
 	}
-	
+
 	*/
 
 
@@ -361,13 +345,13 @@ class Field extends \acf_field {
 	*/
 
 	/*
-	
+
 	function load_value( $value, $post_id, $field ) {
-		
+
 		return $value;
-		
+
 	}
-	
+
 	*/
 
 
@@ -400,20 +384,20 @@ class Field extends \acf_field {
 
 
 	/**
-	*  format_value
-	*
-	*  Add path (file_location) to returned file url
-	*
-	*  @type	filter
-	*  @since	3.6
-	*  @date	23/01/13
-	*
-	*  @param	$value (mixed) the value which was loaded from the database
-	*  @param	$post_id (mixed) the $post_id from which the value was loaded
-	*  @param	$field (array) the field array holding all the field options
-	*
-	*  @return	$value (mixed) the modified value
-	*/
+	 *  format_value
+	 *
+	 *  Add path (file_location) to returned file url
+	 *
+	 *  @type	filter
+	 *  @since	3.6
+	 *  @date	23/01/13
+	 *
+	 *  @param	$value (mixed) the value which was loaded from the database
+	 *  @param	$post_id (mixed) the $post_id from which the value was loaded
+	 *  @param	$field (array) the field array holding all the field options
+	 *
+	 *  @return	$value (mixed) the modified value
+	 */
 
 	function format_value($value, $post_id, $field) {
 
@@ -485,13 +469,9 @@ class Field extends \acf_field {
 	*/
 
 	/*
-	
 	function delete_value( $post_id, $key ) {
-		
-		
-		
+
 	}
-	
 	*/
 
 
@@ -502,20 +482,20 @@ class Field extends \acf_field {
 	*
 	*  @type	filter
 	*  @date	23/01/2013
-	*  @since	3.6.0	
+	*  @since	3.6.0
 	*
 	*  @param	$field (array) the field array holding all the field options
 	*  @return	$field
 	*/
 
 	/*
-	
+
 	function load_field( $field ) {
-		
+
 		return $field;
-		
-	}	
-	
+
+	}
+
 	*/
 
 
@@ -533,13 +513,13 @@ class Field extends \acf_field {
 	*/
 
 	/*
-	
+
 	function update_field( $field ) {
-		
+
 		return $field;
-		
-	}	
-	
+
+	}
+
 	*/
 
 
@@ -557,16 +537,12 @@ class Field extends \acf_field {
 	*/
 
 	/*
-	
+
 	function delete_field( $field ) {
-		
-		
-		
-	}	
-	
+
+	}
 	*/
 }
-
 
 
 
