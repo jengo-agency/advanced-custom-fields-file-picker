@@ -203,13 +203,14 @@ class Field extends \acf_field {
 	function input_admin_enqueue_scripts() {
 		$dir = plugin_dir_url(__FILE__);
 
-		//* register & include JS
-		wp_register_script('dynamic-select-js', "{$dir}js/DynamicSelect.js");
-		wp_enqueue_script('dynamic-select-js');
+		//register & include JS
+		wp_enqueue_script('acf-input-file_picker', "{$dir}js/input.js");
+		wp_enqueue_script('dynamic-select', "{$dir}js/DynamicSelect.js");
 
-		//* register & include CSS
-		wp_register_style('dynamic-select-css', "{$dir}css/DynamicSelect.css");
-		wp_enqueue_style('dynamic-select-css');
+
+		//register & include CSS
+		wp_register_style('acf-input-file_picker', "{$dir}css/input.css");
+		wp_enqueue_style('acf-input-file_picker');
 	}
 
 
