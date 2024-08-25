@@ -201,16 +201,18 @@ class Field extends \acf_field {
 
 
 	function input_admin_enqueue_scripts() {
-		$dir = plugin_dir_url(dirname(__FILE__));
+		$url = plugin_dir_url(dirname(__FILE__));
+		$path = plugin_dir_path(dirname(__FILE__));
 
 		//register & include JS
-		wp_enqueue_script('acf-input-file_picker', "{$dir}js/input.js");
-		wp_enqueue_script('dynamic-select', "{$dir}js/DynamicSelect.js");
+		wp_enqueue_script('acf-input-file_picker', "{$url}js/input.js", array(), filemtime("{$path}js/input.js"),array("strategy" => "defer"));
+		wp_enqueue_script('dynamic-select', "{$url}js/dynamic-select.js", array('acf-input-file_picker'), filemtime("{$path}js/input.js"),array("strategy" => "defer"));
 
 
 		//register & include CSS
-		wp_register_style('acf-input-file_picker', "{$dir}css/input.css");
-		wp_enqueue_style('acf-input-file_picker');
+		wp_enqueue_style('acf-input-file_picker', "{$url}css/input.css", array(), filemtime("{$path}css/input.css"),'screen');
+		wp_enqueue_style('dynamic-select', "{$url}css/dynamic-select.css", array('acf-input-file_picker'), filemtime("{$path}css/dynamic-select.css"),'screen');
+
 	}
 
 
