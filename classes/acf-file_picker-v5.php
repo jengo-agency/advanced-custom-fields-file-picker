@@ -201,7 +201,7 @@ class Field extends \acf_field {
 
 
 	function input_admin_enqueue_scripts() {
-		$dir = plugin_dir_url(__FILE__);
+		$dir = plugin_dir_url(dirname(__FILE__));
 
 		//register & include JS
 		wp_enqueue_script('acf-input-file_picker', "{$dir}js/input.js");
