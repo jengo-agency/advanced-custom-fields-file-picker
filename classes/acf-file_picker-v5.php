@@ -153,35 +153,43 @@ class Field extends \acf_field {
 	*/
 
 	function render_field($field) {
+        // Support value as array (for override), or string (legacy)
+        $value = $field['value'];
+        $file_location_override = '';
+        $file_value = '';
+        if (is_array($value)) {
+            $file_value = isset($value['file']) ? $value['file'] : '';
+            $file_location_override = isset($value['file_location']) ? $value['file_location'] : '';
+        } else {
+            $file_value = $value;
+        }
 
-		/*
-		*  Review the data of $field.
-		*  This will show what data is available
-		*/
+        // Use override if set, else default from field settings
+        $file_location_setting = isset($field['file_location']) ? $field['file_location'] : '';
+        $file_location = $file_location_override !== '' ? $file_location_override : $file_location_setting;
 
-		$file_location = $this->get_file_location_directory($field['file_location']);
-		$file_uri_location = trailingslashit(get_stylesheet_directory_uri() . '/' . $field['file_location']);
-		$files = $this->get_files_in_location($file_location, $field['file_glob']);
-
-
-		/*
-		* Create a simple text input using the 'font_size' setting.
-		*/
+        $file_location_dir = $this->get_file_location_directory($file_location);
+        $file_uri_location = trailingslashit(get_stylesheet_directory_uri() . '/' . $file_location);
+        $files = $this->get_files_in_location($file_location_dir, $field['file_glob']);
 
 ?>
-
-		<?php if (empty($files)) : ?>
+        <p>
+            <label>
+                <?php esc_html_e('File Location (override):', 'acf-file_picker'); ?>
+                <input type="text" name="<?php echo esc_attr($field['name']); ?>[file_location]" value="<?php echo esc_attr($file_location); ?>" style="width: 60%;" />
+            </label>
+        </p>
+        <?php if (empty($files)) : ?>
 			<p>No files were found in the location specified. Please check your field configuration.</p>
-		<?php endif; ?>
-		<select name="<?php echo esc_attr($field['name']) ?>" data-dynamic-select>
-			<option value="">Please select a file</option>
-			<?php foreach ($files as $file) : ?>
-				<option value="<?= $file; ?>" data-img="<?= $file_uri_location . "/" . $file ?>" <?= ($field['value'] == $file) ? 'selected' : ''; ?>><?= $file; ?></option>
-			<?php endforeach; ?>
-		</select>
-
+        <?php endif; ?>
+        <select name="<?php echo esc_attr($field['name']); ?>[file]" data-dynamic-select>
+            <option value="">Please select a file</option>
+            <?php foreach ($files as $file) : ?>
+                <option value="<?= $file ?>" data-img="<?= $file_uri_location . "/" . $file ?>" <?= ($file_value == $file) ? 'selected' : ''; ?>><?= $file ?></option>
+            <?php endforeach; ?>
+        </select>
 <?php
-	}
+    }
 
 
 	/*
@@ -403,18 +411,23 @@ class Field extends \acf_field {
 	 */
 
 	function format_value($value, $post_id, $field) {
-
-		// bail early if no value
-		if (empty($value)) {
-			return $value;
-		}
-		$path_prefix = wp_normalize_path('/' . $field['file_location']) . '/';
-		$url_prefix = trailingslashit(get_stylesheet_directory_uri() . '/' . $field['file_location']);
-		//var_dump($field);
-
-		// return
-		return $url_prefix . $value;
-	}
+        if (empty($value)) {
+            return $value;
+        }
+        // If value is array, use override logic
+        if (is_array($value) && isset($value['file'])) {
+            $file = $value['file'];
+            $file_location = isset($value['file_location']) && $value['file_location'] !== '' ? $value['file_location'] : $field['file_location'];
+        } else {
+            $file = $value;
+            $file_location = $field['file_location'];
+        }
+        if (empty($file)) {
+            return '';
+        }
+        $url_prefix = trailingslashit(get_stylesheet_directory_uri() . '/' . $file_location);
+        return $url_prefix . $file;
+    }
 
 
 
