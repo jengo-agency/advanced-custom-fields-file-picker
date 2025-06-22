@@ -1,6 +1,17 @@
 (function ($) {
   function initialize_field($el) {
-    //$el.doStuff();
+    // Hide override by default
+    $el.find('.acf-file-picker-location-override').hide();
+    $el.find('.acf-file-picker-toggle-override').prop('checked', false);
+
+    // Toggle on checkbox
+    $el.find('.acf-file-picker-toggle-override').on('change', function () {
+      if ($(this).is(':checked')) {
+        $el.find('.acf-file-picker-location-override').slideDown(150);
+      } else {
+        $el.find('.acf-file-picker-location-override').slideUp(150);
+      }
+    });
   }
 
   /*

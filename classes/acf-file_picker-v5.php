@@ -173,21 +173,27 @@ class Field extends \acf_field {
         $files = $this->get_files_in_location($file_location_dir, $field['file_glob']);
 
 ?>
+    <div class="acf-file-picker-location-override" style="display:none;">
         <p>
             <label>
                 <?php esc_html_e('File Location (override):', 'acf-file_picker'); ?>
                 <input type="text" name="<?php echo esc_attr($field['name']); ?>[file_location]" value="<?php echo esc_attr($file_location); ?>" style="width: 60%;" />
             </label>
         </p>
-        <?php if (empty($files)) : ?>
-			<p>No files were found in the location specified. Please check your field configuration.</p>
-        <?php endif; ?>
-        <select name="<?php echo esc_attr($field['name']); ?>[file]" data-dynamic-select>
-            <option value="">Please select a file</option>
-            <?php foreach ($files as $file) : ?>
-                <option value="<?= $file ?>" data-img="<?= $file_uri_location . "/" . $file ?>" <?= ($file_value == $file) ? 'selected' : ''; ?>><?= $file ?></option>
-            <?php endforeach; ?>
-        </select>
+    </div>
+    <label style="display:block; margin: 8px 0;">
+        <input type="checkbox" class="acf-file-picker-toggle-override" />
+        <?php esc_html_e('Override file location', 'acf-file_picker'); ?>
+    </label>
+    <?php if (empty($files)) : ?>
+        <p>No files were found in the location specified. Please check your field configuration.</p>
+    <?php endif; ?>
+    <select name="<?php echo esc_attr($field['name']); ?>[file]" data-dynamic-select>
+        <option value="">Please select a file</option>
+        <?php foreach ($files as $file) : ?>
+            <option value="<?= $file ?>" data-img="<?= $file_uri_location . "/" . $file ?>" <?= ($file_value == $file) ? 'selected' : ''; ?>><?= $file ?></option>
+        <?php endforeach; ?>
+    </select>
 <?php
     }
 
