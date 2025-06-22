@@ -453,18 +453,25 @@ class Field extends \acf_field {
 
 
 	function validate_value($valid, $value, $field, $input) {
+    // Support array value (with override) or string (legacy)
+    if (is_array($value)) {
+        $file = isset($value['file']) ? $value['file'] : '';
+        $file_location = isset($value['file_location']) && $value['file_location'] !== '' ? $value['file_location'] : (isset($field['file_location']) ? $field['file_location'] : '');
+    } else {
+        $file = $value;
+        $file_location = isset($field['file_location']) ? $field['file_location'] : '';
+    }
 
-		$directory = $this->get_file_location_directory($field['file_location']);
+    $directory = $this->get_file_location_directory($file_location);
 
-		// Ensure the file actually exists...
-		if (!file_exists($directory . $value)) {
-			$valid = __('That file does not exist or cannot be read', 'acf-file_picker');
-		}
+    // Ensure the file actually exists...
+    if ($file && !file_exists($directory . $file)) {
+        $valid = __('That file does not exist or cannot be read', 'acf-file_picker');
+    }
 
-
-		// return
-		return $valid;
-	}
+    // return
+    return $valid;
+}
 
 
 
