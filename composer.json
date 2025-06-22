@@ -1,7 +1,8 @@
 {
-    "name": "alapiere/acf-file-picker",
+    "name": "jengo-agency/acf-file-picker",
     "description": "An Advanced Custom Field to pick a file from a chosen directory.",
     "type": "wordpress-plugin",
+    "version": "2.0.0",
     "authors": [
         {
             "name": "David Smith"
